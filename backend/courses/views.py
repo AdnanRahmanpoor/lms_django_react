@@ -1,7 +1,7 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from .models import Course, Lesson
-from .serializers import CourseSerializer, LessonSerializer
+from .models import Course, Lesson, Enrollment
+from .serializers import CourseSerializer, LessonSerializer, EnrollmentSerializer
 
 # Allow authenticated users to create and view courses
 class CourseListCreateView(generics.ListCreateAPIView):
@@ -38,3 +38,20 @@ class LessonDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = LessonSerializer
     permission_classes = [IsAuthenticated]
 
+# allow authenticated to enroll in course
+class EnrollCourseView(generics.CreateAPIView):
+    serializer_class = EnrollmentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        course_id = self.kwargs.get('course-id')
+        course = Course.objects.get(id=course_id)
+        serializer.save(student=self.request.user, course=course)
+
+# list all courses the user is enrolled in
+class EnrollmentListView(generics.ListAPIView):
+    serializer_class = EnrollmentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Enrollment.objects.filter(student=self.request.user)
