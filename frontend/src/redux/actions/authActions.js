@@ -4,18 +4,26 @@ export const register = (userData) => async (dispatch) => {
     try {
         const response = await axiosInstance.post('users/register/', userData);
         dispatch({ type: 'REGISTER_SUCCESS', payload: response.data });
+        return response.data;
     } catch (error) {
-        dispatch({ type: 'AUTH_ERROR', payload: error.response.data });
+        const errorMessage = error.response && error.response.data ? error.response.data : 'Registration Failed';
+        dispatch({ type: 'AUTH_ERROR', payload: errorMessage });
+        throw errorMessage;
     }
 };
 
 export const login = (credentials) => async (dispatch) => {
     try {
         const response = await axiosInstance.post('users/login/', credentials);
-        localStorage.setItem('token', response.data.token);
-        dispatch({ type: 'LOGIN_SUCCESSS', payload: response.data });
+        if (response.data && response.data.token) {
+            localStorage.setItem('token', response.data.token);
+            dispatch({ type: 'LOGIN_SUCCESSS', payload: response.data });
+        } else {
+            throw new Error('Token not provided in the response');
+        }
     } catch (error) {
-        dispatch({ type: 'AUTH_ERROR', payload: error.response.data });
+        const errorMessage = error.response && error.response.data ? error.response.data : 'Login Failed';
+        dispatch({ type: 'AUTH_ERROR', payload: errorMessage });
     }
 };
 
