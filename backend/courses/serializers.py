@@ -4,7 +4,7 @@ for data conversion into JSON format
 '''
 
 from rest_framework import serializers
-from .models import Course, Lesson, Enrollment
+from .models import Course, Lesson, Enrollment, CourseMaterial
 
 class LessonSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,3 +23,9 @@ class EnrollmentSerializer(serializers.ModelSerializer):
         model = Enrollment
         fields = ['id', 'student', 'course', 'enrolled_at']
         read_only_fields = ['student', 'enrolled_at']
+
+class CourseMaterialSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourseMaterial
+        fields = ['id', 'course', 'title', 'material_type', 'file', 'uploaded_by', 'created_at']
+        read_only_fields = ['uploaded_by', 'created_at']
