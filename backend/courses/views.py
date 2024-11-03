@@ -58,6 +58,7 @@ class EnrollmentListView(generics.ListAPIView):
     
 # coursematerial view for CRUD operations
 class CourseMaterialViewSet(viewsets.ModelViewSet):
+    queryset = CourseMaterial.objects.all()
     serializer_class = CourseMaterialSerializer
     permission_classes = [IsAuthenticated]
 
