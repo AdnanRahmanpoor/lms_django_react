@@ -1,7 +1,7 @@
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework.permissions import IsAuthenticated
-from .models import Course, Lesson, Enrollment
-from .serializers import CourseSerializer, LessonSerializer, EnrollmentSerializer
+from .models import Course, Lesson, Enrollment, CourseMaterial
+from .serializers import CourseSerializer, LessonSerializer, EnrollmentSerializer, CourseMaterialSerializer
 
 # Allow authenticated users to create and view courses
 class CourseListCreateView(generics.ListCreateAPIView):
@@ -55,3 +55,14 @@ class EnrollmentListView(generics.ListAPIView):
 
     def get_queryset(self):
         return Enrollment.objects.filter(student=self.request.user)
+    
+# coursematerial view for CRUD operations
+class CourseMaterialViewSet(viewsets.ModelViewSet):
+    serializer_class = CourseMaterialSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return CourseMaterial.objects.filter(course__enrolled_students=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(uploaded_by=self.request.user)
