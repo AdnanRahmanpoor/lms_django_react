@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import CourseList from './components/CourseList';
 import CourseDetail from './components/CourseDetail';
 import LessonDetail from "./components/LessonDetail";
+import EnrollmentList from "./components/EnrollmentList";
 
 function App() {
     return (
@@ -16,7 +17,7 @@ function App() {
                     <Route path="/" element={<CourseList />} />
                     <Route path="/courses/:courseId" element={<CourseDetail />} />
                     <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonDetail />} />
-
+                    <Route path="/enrollments" element={<EnrollmentList />} />
                 </Routes>
             </div>
         </Router>
