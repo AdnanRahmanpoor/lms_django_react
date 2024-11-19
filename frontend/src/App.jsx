@@ -6,6 +6,7 @@ import CourseList from './components/CourseList';
 import CourseDetail from './components/CourseDetail';
 import LessonDetail from "./components/LessonDetail";
 import EnrollmentList from "./components/EnrollmentList";
+import CourseMaterial from "./components/CourseMaterial";
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                     <Route path="/courses/:courseId" element={<CourseDetail />} />
                     <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonDetail />} />
                     <Route path="/enrollments" element={<EnrollmentList />} />
+                    <Route path="/materials/:materialId" element={<CourseMaterial />} />
                 </Routes>
             </div>
         </Router>
